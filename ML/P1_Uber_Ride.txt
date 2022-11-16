@@ -1,0 +1,65 @@
+https://www.kaggle.com/datasets/yasserh/uber-fares-dataset
+
+import pandas as pd
+import numpy as np
+df = pd.read_csv('uber.csv')
+df.head()
+df.info()
+df = df.drop(['Unnamed: 0', 'key'], axis =1)
+df.head()
+df.isna().sum()
+df = df.dropna(axis=0)
+df.isna().sum()
+df.shape
+df.dtypes
+df['pickup_datetime'] = pd.to_datetime(df['pickup_datetime'])
+df.dtypes
+df = df.assign(hour = df.pickup_datetime.dt.hour,
+              day = df.pickup_datetime.dt.day,
+              month = df.pickup_datetime.dt.month,
+              year = df.pickup_datetime.dt.year,
+              dayofweek = df.pickup_datetime.dt.day_of_week)
+df
+
+df = df.drop("pickup_datetime", axis =1)
+
+df
+
+from sklearn.model_selection import train_test_split
+
+x = df.drop('fare_amount', axis=1)
+y=df.fare_amount
+
+x_train,x_test,y_train,y_test = train_test_split(x,y, test_size=0.20, random_state=42)
+
+from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+model.fit(x_train,y_train)
+
+#Linear Regression
+y_pred = model.predict(x_test)
+from sklearn import metrics
+
+mae = metrics.mean_absolute_error(y_test,y_pred)
+mse = metrics.mean_squared_error(y_test,y_pred)
+rmse = np.sqrt(mse)
+print("\nMAE:{:.2f}".format(mae))
+print("\nMSE:{:.2f}".format(mse))
+print("\nRMSE:{:.2f}".format(rmse))
+
+# Random Forest
+from sklearn.ensemble import RandomForestRegressor
+model = RandomForestRegressor(n_estimators=100)
+model.fit(x_train,y_train)
+
+#RandamforestRegressor
+y_pred = model.predict(x_test)
+
+mae = metrics.mean_absolute_error(y_test,y_pred)
+mse = metrics.mean_squared_error(y_test,y_pred)
+rmse = np.sqrt(mse)
+print("\nMAE:{:.2f}".format(mae))
+print("\nMSE:{:.2f}".format(mse))
+print("\nRMSE:{:.2f}".format(rmse))
+

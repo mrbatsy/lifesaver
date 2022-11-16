@@ -1,0 +1,63 @@
+https://www.kaggle.com/datasets/balaka18/email-spam-classification-dataset-csv
+
+import pandas as pd 
+import numpy as np
+
+df = pd.read_csv('emails.csv')
+
+df.head()
+
+x = df.drop(['Email No.', 'Prediction'], axis=1)
+y = df['Prediction']
+
+from sklearn.model_selection import train_test_split
+
+x_train, x_test, y_train, y_test = train_test_split(x,y,test_size=0.20, random_state=33)
+
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+
+x_train = sc.fit_transform(x_train)
+x_test = sc.transform(x_test)
+
+from sklearn.preprocessing import MinMaxScaler
+
+sc = MinMaxScaler()
+
+x_train = sc.fit_transform(x_train)
+x_test = sc.transform(x_test)
+
+from sklearn.neighbors import KNeighborsClassifier
+
+classifire.fit(x_train,y_train)
+
+#KNeighborsClassifier()
+
+y_pred = classifire.predict(x_test)
+
+import sklearn.metrics as metrics
+
+mae = metrics.mean_absolute_error(y_test, y_pred)*100
+mse = metrics.mean_squared_error(y_test, y_pred)*100
+rmse = np.sqrt(mse)
+acc = metrics.accuracy_score(y_test, y_pred)*100
+print("\n Printing values of KNN classifire")
+print("\nMAE:{:.2f}".format(mae))
+print("\nMSE:{:.2f}".format(mse))
+print("\nRMSE:{:.2f}".format(rmse))
+print("\nAccuracy:{:.2f}".format(acc))
+
+from sklearn.svm import SVC
+classifire1 = SVC(kernel="rbf", random_state=1)
+classifire1.fit(x_train, y_train)
+y_pred1 = classifire1.predict(x_test)
+
+mae1 = metrics.mean_absolute_error(y_test, y_pred1)*100
+mse1 = metrics.mean_squared_error(y_test, y_pred1)*100
+rmse1 = np.sqrt(mse1)
+acc1 = metrics.accuracy_score(y_test, y_pred1)*100
+print("\n Printing values of SVM classifire")
+print("\nMAE:{:.2f}".format(mae1))
+print("\nMSE:{:.2f}".format(mse1))
+print("\nRMSE:{:.2f}".format(rmse1))
+print("\nAccuracy:{:.2f}".format(acc1))

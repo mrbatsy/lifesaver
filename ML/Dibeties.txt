@@ -1,0 +1,61 @@
+https://www.kaggle.com/datasets/abdallamahgoub/diabetes
+
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("diabetes.csv")
+df.head()
+df.shape
+
+x = df.drop(['Outcome'], axis= 1)
+y = df['Outcome']
+
+x
+
+from sklearn.model_selection import train_test_split
+
+x_train,x_test,y_train,y_test = train_test_split(x,y, test_size=0.20, random_state=22)
+
+from sklearn.neighbors import KNeighborsClassifier
+
+knn = KNeighborsClassifier()
+knn.fit(x_train,y_train)
+
+#KNeighborsClassifier
+
+y_pred = knn.predict(x_test)
+
+from sklearn import metrics
+
+from sklearn import metrics
+
+accuracy = metrics.accuracy_score(y_test,y_pred)
+
+print("\nAccuracy is:{:.2f}".format(accuracy*100))
+
+from sklearn.metrics import confusion_matrix
+
+print(confusion_matrix(y_test,y_pred))
+
+tn,tp,fn,fp = confusion_matrix(y_test, y_pred).ravel()
+
+print("\nTrue Negative",tn)
+print("\nTrue Positive",tp)
+print("\nFalse Negative",fn)
+print("\nFalse positive",fp)
+
+#Accuracy
+acc = (tn+tp)*100/(tn+tp+fn+fp)
+print("Accuracy is:{:.2f}".format(acc))
+
+#Precision
+precision = tp/(tp+fp)
+print("Precision is:{:.2f}".format(precision))
+
+#Recall
+recall = tp/(tp+fn)
+print("Recall is:{:.2f}".format(recall))
+
+#Error rate
+err = (fp+fn)/(fp+tn+fn+fp)
+print("Error is:{:.2f}".format(err))
